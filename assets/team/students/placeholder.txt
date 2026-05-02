@@ -1,0 +1,3 @@
+Coloca aquí las fotos individuales de cada estudiante.
+Formatos aceptados: JPG, PNG, WEBP
+Nombre sugerido: nombre-apellido.jpg (ej: maria-gonzalez.jpg)
