@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACGB.Lab — Laboratorio de Adaptación Climática y Gestión del Bosque</title>
+  <meta name="description" content="Investigamos los mecanismos fisiológicos y ecológicos de los ecosistemas forestales frente al cambio climático. Universidad de Chile." />
+  <link rel="icon" href="assets/logo/logo.png" type="image/png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            f: {
+              950:'#071510', 900:'#0e2318', 850:'#152d20', 800:'#1a3d2b',
+              700:'#24543a', 600:'#2d6a4f', 500:'#3a8a65', 400:'#52b788',
+              300:'#74c69d', 200:'#95d5b2', 100:'#d8f3dc', 50:'#f0faf4',
+            }
+          },
+          fontFamily: {
+            display: ['"Playfair Display"','Georgia','serif'],
+            body: ['Inter','system-ui','sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body  { font-family:'Inter',system-ui,sans-serif; background:#f7f8f5; color:#1a2620; }
+    h1,h2,h3,h4 { font-family:'Playfair Display',Georgia,serif; letter-spacing:-0.02em; }
+
+    /* shadows */
+    .sh  { box-shadow:0 1px 3px rgba(14,35,24,.06),0 4px 14px rgba(14,35,24,.07); transition:box-shadow .3s,transform .3s; }
+    .sh:hover { box-shadow:0 4px 8px rgba(14,35,24,.09),0 12px 28px rgba(14,35,24,.1); transform:translateY(-3px); }
+
+    /* photo hover zoom */
+    .ph { overflow:hidden; }
+    .ph img { display:block; width:100%; height:100%; object-fit:cover; transition:transform .5s cubic-bezier(.25,.46,.45,.94); }
+    .ph:hover img { transform:scale(1.06); }
+
+    /* section label / title */
+    .lbl { font-family:'Inter',sans-serif; font-size:.68rem; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:#52b788; }
+    .ttl { font-size:clamp(1.6rem,3vw,2.1rem); color:#0e2318; margin-top:.2rem; }
+    .ttl::after { content:''; display:block; width:2.5rem; height:3px; background:#52b788; margin-top:.45rem; border-radius:2px; }
+    .sub { font-size:.93rem; color:#6b7280; margin-top:.7rem; line-height:1.75; }
+
+    /* tag pills */
+    .tag-g { background:#d8f3dc; color:#1a3d2b; }
+    .tag-b { background:#dbeafe; color:#1e3a5f; }
+    .tag-a { background:#fef3c7; color:#5f3a1e; }
+    .tag { font-size:.67rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase; padding:.2rem .65rem; border-radius:20px; display:inline-block; }
+
+    /* research card stripe */
+    .rs-g { background:linear-gradient(135deg,#0e2318,#2d6a4f); }
+    .rs-b { background:linear-gradient(135deg,#0e2340,#2d4f6a); }
+    .rs-a { background:linear-gradient(135deg,#3d2b0e,#6a4f2d); }
+
+    /* nav link */
+    .nl { padding:.35rem .6rem; border-radius:6px; font-size:.85rem; font-weight:600; color:rgba(255,255,255,.78); transition:color .2s,background .2s; white-space:nowrap; }
+    .nl:hover,.nl.active { color:#fff; background:rgba(255,255,255,.14); }
+
+    /* subsection divider */
+    .sdiv { font-family:'Inter',sans-serif; font-size:.67rem; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:#52b788; border-bottom:1px solid #d1fae5; padding-bottom:.4rem; margin-bottom:1.2rem; }
+
+    /* doc row */
+    .doc { display:flex; align-items:flex-start; gap:1rem; padding:1rem 1.25rem; background:#fff; border:1px solid #e5e7eb; border-radius:10px; transition:border-color .2s; }
+    .doc:hover { border-color:#74c69d; }
+
+    /* stat */
+    .stc { background:#f0faf4; border:1px solid #d1fae5; border-radius:10px; padding:1rem; text-align:center; }
+    .stn { font-family:'Playfair Display',serif; font-size:2rem; font-weight:700; color:#2d6a4f; }
+
+    /* form */
+    .ff { width:100%; padding:.7rem 1rem; border:1px solid #d1d5db; border-radius:8px; font-family:'Inter',sans-serif; font-size:.9rem; transition:border-color .2s,box-shadow .2s; }
+    .ff:focus { outline:none; border-color:#52b788; box-shadow:0 0 0 3px rgba(82,183,136,.15); }
+    textarea.ff { resize:vertical; min-height:120px; }
+
+    /* buttons */
+    .bp  { display:inline-block; padding:.65rem 1.4rem; background:#2d6a4f; color:#fff; border-radius:8px; font-weight:600; font-size:.9rem; transition:background .2s,transform .15s; }
+    .bp:hover { background:#1a3d2b; transform:translateY(-1px); }
+    .bo  { display:inline-block; padding:.55rem 1.1rem; border:1.5px solid #2d6a4f; color:#2d6a4f; border-radius:8px; font-weight:600; font-size:.85rem; transition:background .2s,color .2s,transform .15s; }
+    .bo:hover { background:#2d6a4f; color:#fff; transform:translateY(-1px); }
+    .bw  { display:inline-block; padding:.6rem 1.35rem; border:1.5px solid rgba(255,255,255,.65); color:rgba(255,255,255,.92); border-radius:8px; font-weight:600; font-size:.9rem; transition:background .2s; }
+    .bw:hover { background:rgba(255,255,255,.15); }
+
+    /* animations */
+    @keyframes fu { from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)} }
+    .a1{animation:fu .7s cubic-bezier(.25,.46,.45,.94) .05s both}
+    .a2{animation:fu .7s cubic-bezier(.25,.46,.45,.94) .2s  both}
+    .a3{animation:fu .7s cubic-bezier(.25,.46,.45,.94) .35s both}
+    .a4{animation:fu .7s cubic-bezier(.25,.46,.45,.94) .5s  both}
+
+    /* language */
+    [data-en]{display:none}
+    body.en [data-es]{display:none}
+    body.en [data-en]{display:revert}
+
+    /* focus */
+    a:focus-visible,button:focus-visible{outline:2px solid #52b788;outline-offset:3px;border-radius:4px}
+
+    /* hero overlay */
+    .hero-overlay { background:linear-gradient(to right, rgba(7,21,16,.82) 40%, rgba(7,21,16,.45) 100%); }
+
+    /* scrollbar */
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#f0faf4}::-webkit-scrollbar-thumb{background:#74c69d;border-radius:3px}
+
+    /* research gif */
+    .res-media { width:100%; height:200px; object-fit:cover; display:block; }
+
+    /* social icon btn */
+    .soc { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:7px; transition:background .2s,transform .15s; }
+    .soc:hover { background:rgba(255,255,255,.18); transform:translateY(-2px); }
+  </style>
+</head>
+<body>
+
+<!-- ===== Lang toggle ===== -->
+<div class="fixed bottom-5 right-5 z-50 flex gap-1 bg-white/90 backdrop-blur border border-gray-200 rounded-full px-1 py-1" style="box-shadow:0 2px 12px rgba(14,35,24,.1)">
+  <button id="btn-es" onclick="setLang('es')" class="px-3 py-1 rounded-full text-xs font-bold bg-f-800 text-white transition-colors">ES</button>
+  <button id="btn-en" onclick="setLang('en')" class="px-3 py-1 rounded-full text-xs font-bold text-gray-500 hover:text-gray-800 transition-colors">EN</button>
+</div>
+
+<!-- ===== Navbar ===== -->
+<nav id="nav" class="sticky top-0 z-40 border-b border-white/10" style="background:rgba(14,35,24,.96);backdrop-filter:blur(14px)">
+  <div class="max-w-7xl mx-auto px-5 h-16 flex items-center gap-4 justify-between">
+
+    <!-- Logos -->
+    <a href="#hero" class="flex items-center gap-3 flex-shrink-0">
+      <img src="assets/logo/logo.png" alt="ACGB.Lab" class="h-9 w-9 object-contain rounded-md" />
+      <span class="font-display font-semibold text-white text-[.95rem] leading-tight hidden sm:block">ACGB.Lab</span>
+      <span class="hidden lg:block w-px h-6 bg-white/20 mx-1"></span>
+      <img src="assets/logo/Logo_Facultaad.png" alt="Facultad Cs. Forestales" class="h-8 object-contain hidden lg:block opacity-90" />
+    </a>
+
+    <!-- Desktop nav -->
+    <ul class="hidden md:flex items-center gap-0.5 flex-1 justify-center">
+      <li><a href="#about"    class="nl" data-es>Sobre el Lab</a><a href="#about"    class="nl" data-en>About</a></li>
+      <li><a href="#team"     class="nl" data-es>Equipo</a><a href="#team"     class="nl" data-en>Team</a></li>
+      <li><a href="#research" class="nl" data-es>Investigación</a><a href="#research" class="nl" data-en>Research</a></li>
+      <li><a href="#fieldwork" class="nl" data-es>Terreno</a><a href="#fieldwork" class="nl" data-en>Fieldwork</a></li>
+      <li><a href="#publications" class="nl" data-es>Publicaciones</a><a href="#publications" class="nl" data-en>Publications</a></li>
+      <li><a href="#contact"  class="nl" data-es>Contacto</a><a href="#contact"  class="nl" data-en>Contact</a></li>
+    </ul>
+
+    <!-- Social + hamburger -->
+    <div class="flex items-center gap-2 flex-shrink-0">
+      <!-- Instagram -->
+      <a href="https://www.instagram.com/acgb.lab/" target="_blank" rel="noopener" aria-label="Instagram" class="soc text-white/70 hover:text-white">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+      <!-- LinkedIn -->
+      <a href="https://cl.linkedin.com/company/acgblab" target="_blank" rel="noopener" aria-label="LinkedIn" class="soc text-white/70 hover:text-white">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+      <button id="ham" class="md:hidden p-2 flex flex-col gap-1.5" aria-label="Menú">
+        <span class="w-5 h-0.5 bg-white rounded block"></span>
+        <span class="w-5 h-0.5 bg-white rounded block"></span>
+        <span class="w-5 h-0.5 bg-white rounded block"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mmenu" class="hidden md:hidden border-t border-white/10 px-5 pb-4 pt-2" style="background:rgba(14,35,24,.98)">
+    <ul class="flex flex-col gap-1">
+      <li><a href="#about"       class="nl block" data-es>Sobre el Lab</a><a href="#about"       class="nl block" data-en>About</a></li>
+      <li><a href="#team"        class="nl block" data-es>Equipo</a><a href="#team"        class="nl block" data-en>Team</a></li>
+      <li><a href="#research"    class="nl block" data-es>Investigación</a><a href="#research"    class="nl block" data-en>Research</a></li>
+      <li><a href="#fieldwork"   class="nl block" data-es>Terreno</a><a href="#fieldwork"   class="nl block" data-en>Fieldwork</a></li>
+      <li><a href="#publications"class="nl block" data-es>Publicaciones</a><a href="#publications"class="nl block" data-en>Publications</a></li>
+      <li><a href="#contact"     class="nl block" data-es>Contacto</a><a href="#contact"     class="nl block" data-en>Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<section id="hero" class="relative min-h-[90vh] flex items-center overflow-hidden">
+  <!-- background photo -->
+  <div class="absolute inset-0">
+    <img src="assets/fieldwork/Terreno1.png" alt="" class="w-full h-full object-cover" />
+    <div class="hero-overlay absolute inset-0"></div>
+  </div>
+  <div class="relative z-10 max-w-7xl mx-auto px-6 py-28 w-full">
+    <div class="max-w-2xl">
+      <div class="a1 flex items-center gap-3 mb-7">
+        <img src="assets/logo/logo.png" alt="ACGB.Lab" class="h-14 w-14 object-contain rounded-xl drop-shadow-2xl" />
+        <img src="assets/logo/Logo_Facultaad.png" alt="Facultad Cs. Forestales" class="h-10 object-contain opacity-90 drop-shadow-lg" />
+      </div>
+      <h1 class="a2 text-white text-4xl sm:text-5xl font-bold leading-tight" style="text-shadow:0 2px 24px rgba(0,0,0,.5)">
+        <span data-es>Laboratorio de Adaptación Climática y Gestión del Bosque</span>
+        <span data-en>Climate Adaptation and Forest Management Laboratory</span>
+      </h1>
+      <p class="a3 mt-5 text-white/80 text-lg leading-relaxed max-w-xl">
+        <span data-es>Investigamos los mecanismos fisiológicos y ecológicos que determinan la respuesta de los bosques frente al cambio climático.</span>
+        <span data-en>We investigate the physiological and ecological mechanisms that determine forest responses to climate change.</span>
+      </p>
+      <div class="a4 mt-8 flex flex-wrap gap-3">
+        <a href="#team"     class="bp" style="background:#fff;color:#0e2318;font-weight:700"><span data-es>Conoce al equipo</span><span data-en>Meet the team</span></a>
+        <a href="#research" class="bw"><span data-es>Nuestra investigación</span><span data-en>Our research</span></a>
+      </div>
+    </div>
+    <!-- stats -->
+    <div class="a4 mt-16 flex flex-wrap gap-8">
+      <div class="text-center"><div class="font-display text-3xl font-bold text-white">8+</div><div class="text-white/60 text-xs mt-0.5 uppercase tracking-wide"><span data-es>Años</span><span data-en>Years</span></div></div>
+      <div class="w-px bg-white/20 self-stretch hidden sm:block"></div>
+      <div class="text-center"><div class="font-display text-3xl font-bold text-white">7</div><div class="text-white/60 text-xs mt-0.5 uppercase tracking-wide"><span data-es>Proyectos</span><span data-en>Projects</span></div></div>
+      <div class="w-px bg-white/20 self-stretch hidden sm:block"></div>
+      <div class="text-center"><div class="font-display text-3xl font-bold text-white">5+</div><div class="text-white/60 text-xs mt-0.5 uppercase tracking-wide"><span data-es>Publicaciones</span><span data-en>Publications</span></div></div>
+      <div class="w-px bg-white/20 self-stretch hidden sm:block"></div>
+      <div class="text-center"><div class="font-display text-3xl font-bold text-white">15</div><div class="text-white/60 text-xs mt-0.5 uppercase tracking-wide"><span data-es>Integrantes</span><span data-en>Members</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== About ===== -->
+<section id="about" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      <div>
+        <p class="lbl"><span data-es>Quiénes somos</span><span data-en>Who we are</span></p>
+        <h2 class="ttl"><span data-es>Sobre el Laboratorio</span><span data-en>About the Lab</span></h2>
+        <p class="sub mt-5">
+          <span data-es>El <strong>Laboratorio de Adaptación Climática y Gestión del Bosque (ACGB.Lab)</strong> investiga los mecanismos fisiológicos y ecológicos de los ecosistemas forestales frente al cambio climático. Integramos fisiología de árboles, silvicultura y teledetección para abordar desafíos actuales en la conservación y manejo sustentable de los bosques de Chile.</span>
+          <span data-en>The <strong>Climate Adaptation and Forest Management Laboratory (ACGB.Lab)</strong> investigates the physiological and ecological mechanisms of forest ecosystems facing climate change. We integrate tree physiology, silviculture, and remote sensing to address current challenges in the conservation and sustainable management of Chile's forests.</span>
+        </p>
+        <p class="sub mt-4">
+          <span data-es>Formamos parte del Departamento de Manejo de Recursos Forestales y Medioambiente de la <strong>Facultad de Ciencias Forestales y de la Conservación de la Naturaleza, Universidad de Chile</strong>. Colaboramos con CONAF, Empresa Forestal Mininco y redes globales de investigación forestal.</span>
+          <span data-en>We are part of the Department of Forest Management and the Environment at the <strong>Faculty of Forest Sciences and Nature Conservation, Universidad de Chile</strong>. We collaborate with CONAF, Empresa Forestal Mininco, and global forest research networks.</span>
+        </p>
+        <div class="mt-8 grid grid-cols-2 gap-3">
+          <div class="stc"><div class="stn">8+</div><div class="text-xs text-gray-400 mt-1"><span data-es>Años de investigación</span><span data-en>Years of research</span></div></div>
+          <div class="stc"><div class="stn">7</div><div class="text-xs text-gray-400 mt-1"><span data-es>Proyectos activos</span><span data-en>Active projects</span></div></div>
+          <div class="stc"><div class="stn">5+</div><div class="text-xs text-gray-400 mt-1"><span data-es>Publicaciones</span><span data-en>Publications</span></div></div>
+          <div class="stc"><div class="stn">15</div><div class="text-xs text-gray-400 mt-1"><span data-es>Integrantes</span><span data-en>Members</span></div></div>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="ph rounded-2xl aspect-[4/3] sh">
+          <img src="assets/team/group/group.jpeg" alt="Equipo ACGB.Lab" />
+        </div>
+        <p class="text-center text-xs text-gray-400 italic"><span data-es>Equipo ACGB.Lab</span><span data-en>ACGB.Lab team</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Team ===== -->
+<section id="team" class="py-24 bg-f-50">
+  <div class="max-w-7xl mx-auto px-6">
+    <p class="lbl"><span data-es>Personas</span><span data-en>People</span></p>
+    <h2 class="ttl"><span data-es>Nuestro Equipo</span><span data-en>Our Team</span></h2>
+    <p class="sub"><span data-es>Haz clic en cualquier persona para ver su perfil completo.</span><span data-en>Click on any person to view their full profile.</span></p>
+
+    <!-- Director -->
+    <div class="mt-12">
+      <div class="sdiv"><span data-es>Director / Investigador Principal</span><span data-en>Principal Investigator</span></div>
+      <div class="bg-white rounded-2xl sh overflow-hidden max-w-2xl cursor-pointer profile-card group"
+           onclick="openProfile(this)"
+           data-type="pi"
+           data-photo="assets/team/director/director.jpeg"
+           data-name="Dr. Andrés Plaza Aguilar"
+           data-role-es="Investigador Principal · Profesor Asistente"
+           data-role-en="Principal Investigator · Assistant Professor"
+           data-career-es="Universidad de Chile"
+           data-career-en="Universidad de Chile"
+           data-bio-es="Doctor en Ciencias de las Plantas (University of Cambridge, 2015). MSc en Ecología de Ecosistemas Terrestres, Université de Bordeaux. Ingeniero Forestal, Universidad de Talca. Profesor Asistente en el Departamento de Manejo de Recursos Forestales y Medioambiente de la Facultad de Ciencias Forestales, Universidad de Chile, desde 2017. Sus líneas de investigación incluyen la fisiología ecológica de árboles y bosques, el estrés hídrico y la resistencia a la cavitación xilemática, la fenología del dosel forestal, y el monitoreo de ecosistemas mediante fotografía digital y teledetección. Ha colaborado con Forest Research (UK), INRA Bordeaux y redes internacionales como EUROPhen/ICOS y GLEON."
+           data-bio-en="Doctor of Philosophy in Plant Sciences (University of Cambridge, 2015). MSc in Terrestrial Ecosystem Ecology, Université de Bordeaux. Forest Engineer, Universidad de Talca. Assistant Professor at the Department of Forest Management and the Environment, Faculty of Forest Sciences and Nature Conservation, Universidad de Chile, since 2017. His research focuses on ecological physiology of trees and forests, water stress and xylem cavitation resistance, forest canopy phenology, and ecosystem monitoring via digital photography and remote sensing. He has collaborated with Forest Research (UK), INRA Bordeaux, and international networks such as EUROPhen/ICOS and GLEON."
+           data-email="andres.plaza@uchile.cl">
+        <div class="flex flex-col sm:flex-row">
+          <div class="ph sm:w-52 flex-shrink-0" style="aspect-ratio:3/4">
+            <img src="assets/team/director/director.jpeg" alt="Dr. Andrés Plaza Aguilar" />
+          </div>
+          <div class="p-6 flex flex-col justify-center">
+            <div class="font-display font-bold text-f-900 text-xl">Dr. Andrés Plaza Aguilar</div>
+            <div class="text-f-600 text-sm font-semibold mt-0.5"><span data-es>Investigador Principal · Profesor Asistente</span><span data-en>Principal Investigator · Assistant Professor</span></div>
+            <div class="text-xs text-gray-400 mt-0.5">Universidad de Chile</div>
+            <p class="text-gray-500 text-sm leading-relaxed mt-4">
+              <span data-es>PhD en Ciencias de las Plantas, University of Cambridge. Especialista en fisiología ecológica de árboles, estrés hídrico, fenología del dosel y monitoreo de ecosistemas forestales.</span>
+              <span data-en>PhD in Plant Sciences, University of Cambridge. Specialist in tree ecological physiology, water stress, canopy phenology, and forest ecosystem monitoring.</span>
+            </p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="tag tag-g"><span data-es>Fisiología forestal</span><span data-en>Forest physiology</span></span>
+              <span class="tag tag-b"><span data-es>Teledetección</span><span data-en>Remote sensing</span></span>
+              <span class="tag tag-a"><span data-es>Cambio climático</span><span data-en>Climate change</span></span>
+            </div>
+            <div class="mt-3 text-[.7rem] font-semibold text-f-400 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              <span data-es>Ver biografía completa</span><span data-en>View full biography</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Staff -->
+    <div class="mt-14">
+      <div class="sdiv"><span data-es>Personal del Laboratorio</span><span data-en>Lab Staff</span></div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+        <div class="bg-white rounded-2xl sh overflow-hidden cursor-pointer profile-card group"
+             onclick="openProfile(this)"
+             data-type="staff"
+             data-photo="assets/team/staff/Katerin Rojas.jpeg"
+             data-name="Katerin Rojas"
+             data-role-es="Encargada de Proyectos del Laboratorio"
+             data-role-en="Lab Projects Manager"
+             data-career-es="Ingeniera Forestal"
+             data-career-en="Forest Engineer"
+             data-bio-es="Ingeniera Forestal a cargo de la coordinación y gestión de los proyectos del laboratorio. Su trabajo es fundamental para el funcionamiento operativo del ACGB.Lab, coordinando actividades de campo, administrativas y de comunicación entre el equipo y los proyectos activos."
+             data-bio-en="Forest Engineer responsible for the coordination and management of laboratory projects. Her work is essential to the operational functioning of ACGB.Lab, coordinating fieldwork, administrative tasks, and communication between the team and active projects.">
+          <div class="ph aspect-square"><img src="assets/team/staff/Katerin Rojas.jpeg" alt="Katerin Rojas" /></div>
+          <div class="p-4">
+            <div class="font-display font-bold text-f-900 text-base">Katerin Rojas</div>
+            <div class="text-f-500 text-[.7rem] font-bold uppercase tracking-wide mt-0.5"><span data-es>Ingeniera Forestal</span><span data-en>Forest Engineer</span></div>
+            <div class="text-gray-500 text-sm mt-1"><span data-es>Encargada de Proyectos del Laboratorio</span><span data-en>Lab Projects Manager</span></div>
+            <div class="mt-2 text-[.65rem] font-semibold text-f-400 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              <span data-es>Ver perfil</span><span data-en>View profile</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl sh overflow-hidden cursor-pointer profile-card group"
+             onclick="openProfile(this)"
+             data-type="staff"
+             data-photo="assets/team/staff/Valentina-Venegas.jpeg"
+             data-name="Valentina Venegas"
+             data-role-es="Muestreo y Análisis"
+             data-role-en="Sampling and Analysis"
+             data-career-es="Ingeniera Forestal"
+             data-career-en="Forest Engineer"
+             data-bio-es="Ingeniera Forestal a cargo de las actividades de muestreo y análisis de datos del laboratorio. Realizó su memoria de título sobre productividad de plantaciones de Pinus radiata en rodales de diferentes edades, utilizando índices de vegetación y clorofila derivados de imágenes de satélite (Forestal Mininco, Región del Maule)."
+             data-bio-en="Forest Engineer responsible for the lab's sampling and data analysis activities. She completed her thesis on Pinus radiata plantation productivity in stands of different ages, using vegetation and chlorophyll indices derived from satellite imagery (Forestal Mininco, Maule Region).">
+          <div class="ph aspect-square"><img src="assets/team/staff/Valentina-Venegas.jpeg" alt="Valentina Venegas" /></div>
+          <div class="p-4">
+            <div class="font-display font-bold text-f-900 text-base">Valentina Venegas</div>
+            <div class="text-f-500 text-[.7rem] font-bold uppercase tracking-wide mt-0.5"><span data-es>Ingeniera Forestal</span><span data-en>Forest Engineer</span></div>
+            <div class="text-gray-500 text-sm mt-1"><span data-es>Muestreo y Análisis</span><span data-en>Sampling and Analysis</span></div>
+            <div class="mt-2 text-[.65rem] font-semibold text-f-400 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              <span data-es>Ver perfil</span><span data-en>View profile</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl sh overflow-hidden cursor-pointer profile-card group"
+             onclick="openProfile(this)"
+             data-type="staff"
+             data-photo="assets/team/staff/Diego-Cruz.jpg"
+             data-name="Diego Cruz"
+             data-role-es="Monitoreo, Dispositivos y Construcción de Equipos"
+             data-role-en="Monitoring, Devices & Equipment"
+             data-career-es="Ingeniero Forestal"
+             data-career-en="Forest Engineer"
+             data-bio-es="Ingeniero Forestal a cargo del monitoreo de sensores y dispositivos de campo, así como de la construcción e instalación de equipos del laboratorio. Realizó su memoria de título sobre procesamiento de imágenes UAV para la estimación de variables dasométricas en plantaciones de Pinus radiata (Forestal Mininco, Región del Maule)."
+             data-bio-en="Forest Engineer responsible for monitoring field sensors and devices, as well as constructing and installing laboratory equipment. He completed his thesis on UAV image processing for estimating dasometric variables in Pinus radiata plantations (Forestal Mininco, Maule Region).">
+          <div class="ph aspect-square"><img src="assets/team/staff/Diego-Cruz.jpg" alt="Diego Cruz" /></div>
+          <div class="p-4">
+            <div class="font-display font-bold text-f-900 text-base">Diego Cruz</div>
+            <div class="text-f-500 text-[.7rem] font-bold uppercase tracking-wide mt-0.5"><span data-es>Ingeniero Forestal</span><span data-en>Forest Engineer</span></div>
+            <div class="text-gray-500 text-sm mt-1"><span data-es>Monitoreo, Dispositivos y Construcción de Equipos</span><span data-en>Monitoring, Devices & Equipment</span></div>
+            <div class="mt-2 text-[.65rem] font-semibold text-f-400 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              <span data-es>Ver perfil</span><span data-en>View profile</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Students -->
+    <div class="mt-14">
+      <div class="sdiv"><span data-es>Estudiantes de Pregrado</span><span data-en>Undergraduate Students</span></div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+
+        <div class="bg-white rounded-xl sh overflow-hidden cursor-pointer profile-card group" onclick="openProfile(this)" data-type="student" data-photo="assets/team/students/Bárbara-Torres.jpeg" data-name="Bárbara Torres" data-role-es="Estudiante de Pregrado" data-role-en="Undergraduate Student" data-career-es="Ingeniería Forestal" data-career-en="Forest Engineering" data-thesis-es="Memoria: por definir" data-thesis-en="Thesis: TBD" data-bio-es="" data-bio-en="">
+          <div class="ph aspect-square"><img src="assets/team/students/Bárbara-Torres.jpeg" alt="Bárbara Torres" /></div>
+          <div class="p-3">
+            <div class="font-semibold text-f-900 text-sm leading-tight">Bárbara Torres</div>
+            <div class="text-f-500 text-[.65rem] font-bold uppercase tracking-wide mt-0.5"><span data-es>Ing. Forestal</span><span data-en>Forest Eng.</span></div>
+            <div class="mt-1.5 text-[.6rem] font-semibold text-f-400 flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span data-es>Ver memoria</span><span data-en>View thesis</span></div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl sh overflow-hidden cursor-pointer profile-card group" onclick="openProfile(this)" data-type="student" data-photo="assets/team/students/Carla-Linsambarth.jpeg" data-name="Carla Linsambarth" data-role-es="Estudiante de Pregrado" data-role-en="Undergraduate Student" data-career-es="Ingeniería Forestal" data-career-en="Forest Engineering" data-thesis-es="Memoria: por definir" data-thesis-en="Thesis: TBD" data-bio-es="" data-bio-en="">
+          <div class="ph aspect-square"><img src="assets/team/students/Carla-Linsambarth.jpeg" alt="Carla Linsambarth" /></div>
+          <div class="p-3">
+            <div class="font-semibold text-f-900 text-sm leading-tight">Carla Linsambarth</div>
+            <div class="text-f-500 text-[.65rem] font-bold uppercase tracking-wide mt-0.5"><span data-es>Ing. Forestal</span><span data-en>Forest Eng.</span></div>
+            <div class="mt-1.5 text-[.6rem] font-semibold text-f-400 flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span data-es>Ver memoria</span><span data-en>View thesis</span></div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl sh overflow-hidden cursor-pointer profile-card group" onclick="openProfile(this)" data-type="student" data-photo="assets/team/students/Esperanza-Urrea.jpeg" data-name="Esperanza Urrea" data-role-es="Estudiante de Pregrado" data-role-en="Undergraduate Student" data-career-es="Ingeniería en Recursos Hídricos" data-career-en="Hydraulic Resources Engineering" data-thesis-es="Memoria: por definir" data-thesis-en="Thesis: TBD" data-bio-es="" data-bio-en="">
+          <div class="ph aspect-square"><img src="assets/team/students/Esperanza-Urrea.jpeg" alt="Esperanza Urrea" /></div>
+          <div class="p-3">
+            <div class="font-semibold text-f-900 text-sm leading-tight">Esperanza Urrea</div>
+            <div class="text-f-500 text-[.65rem] font-bold uppercase tracking-wide mt-0.5"><span data-es>Ing. Rec. Hídricos</span><span data-en>Hydraulic Res.</span></div>
+            <div class="mt-1.5 text-[.6rem] font-semibold text-f-400 flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span data-es>Ver memoria</span><span data-en>View thesis</span></div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl sh overflow-hidden cursor-pointer profile-card group" onclick="openProfile(this)" data-type="student" data-photo="assets/team/students/Felipe-Vargas.jpeg" data-name="Felipe Vargas" data-role-es="Estudiante de Pregrado" data-role-en="Undergraduate Student" data-career-es="Ingeniería Forestal" data-career-en="Forest Engineering" data-thesis-es="Memoria: por definir" data-thesis-en="Thesis: TBD" data-bio-es="" data-bio-en="">
+          <div class="ph aspect-square"><img src="assets/team/students/Felipe-Vargas.jpeg" alt="Felipe Vargas" /></div>
+          <div class="p-3">
+            <div class="font-semibold text-f-900 text-sm leading-tight">Felipe Vargas</div>
+            <div class="text-f-500 text-[.65rem] font-bold uppercase tracking-wide mt-0.5"><span data-es>Ing. Forestal</span><span data-en>Forest Eng.</span></div>
+            <div class="mt-1.5 text-[.6rem] font-semibold text-f-400 flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span data-es>Ver memoria</span><span data-en>View thesis</span></div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl sh overflow-hidden cursor-pointer profile-card group" onclick="openProfile(this)" data-type="student" data-photo="assets/team/students/Fernanda-Mandiola.jpeg" data-name="Fernanda Mandiola" data-role-es="Estudiante de Pregrado" data-role-en="Undergraduate Student" data-career-es="Ingeniería Forestal" data-career-en="Forest Engineering" data-thesis-es="Memoria: por definir" data-thesis-en="Thesis: TBD" data-bio-es="" data-bio-en="">
+          <div class="ph aspect-square"><img src="assets/team/students/Fernanda-Mandiola.jpeg" alt="Fernanda Mandiola" /></div>
+          <div class="p-3">
+            <div class="font-semibold text-f-900 text-sm leading-tight">Fernanda Mandiola</div>
+            <div class="text-f-500 text-[.65rem] font-bold uppercase tracking-wide mt-0.5"><span data-es>Ing. Forestal</span><span data-en>Forest Eng.</span></div>
+            <div class="mt-1.5 text-[.6rem] font-semibold text-f-400 flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span data-es>Ver memoria</span><span data-en>View thesis</span></div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl sh overflow-hidden cursor-pointer profile-card group" onclick="openProfile(this)" data-type="student" data-photo="assets/team/students/Gregor-Pohl.jpeg" data-name="Gregor Pohl" data-role-es="Estudiante de Pregrado" data-role-en="Undergraduate Student" data-career-es="Ingeniería Forestal" data-career-en="Forest Engineering" data-thesis-es="Memoria: por definir" data-thesis-en="Thesis: TBD" data-bio-es="" data-bio-en="">
+          <div class="ph aspect-square"><img src="assets/team/students/Gregor-Pohl.jpeg" alt="Gregor Pohl" /></div>
+          <div class="p-3">
+            <div class="font-semibold text-f-900 text-sm leading-tight">Gregor Pohl</div>
+            <div class="text-f-500 text-[.65rem] font-bold uppercase tracking-wide mt-0.5"><span data-es>Ing. Forestal</span><span data-en>Forest Eng.</span></div>
+            <div class="mt-1.5 text-[.6rem] font-semibold text-f-400 flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span data-es>Ver memoria</span><span data-en>View thesis</span></div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl sh overflow-hidden cursor-pointer profile-card group" onclick="openProfile(this)" data-type="student" data-photo="assets/team/students/Ignacia-Leiva.jpeg" data-name="Ignacia Leiva" data-role-es="Estudiante de Pregrado" data-role-en="Undergraduate Student" data-career-es="Ingeniería Forestal" data-career-en="Forest Engineering" data-thesis-es="Memoria: por definir" data-thesis-en="Thesis: TBD" data-bio-es="" data-bio-en="">
+          <div class="ph aspect-square"><img src="assets/team/students/Ignacia-Leiva.jpeg" alt="Ignacia Leiva" /></div>
+          <div class="p-3">
+            <div class="font-semibold text-f-900 text-sm leading-tight">Ignacia Leiva</div>
+            <div class="text-f-500 text-[.65rem] font-bold uppercase tracking-wide mt-0.5"><span data-es>Ing. Forestal</span><span data-en>Forest Eng.</span></div>
+            <div class="mt-1.5 text-[.6rem] font-semibold text-f-400 flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span data-es>Ver memoria</span><span data-en>View thesis</span></div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl sh overflow-hidden cursor-pointer profile-card group" onclick="openProfile(this)" data-type="student" data-photo="assets/team/students/Javiera-Mahan.jpeg" data-name="Javiera Mahan" data-role-es="Estudiante de Pregrado" data-role-en="Undergraduate Student" data-career-es="Ingeniería Forestal" data-career-en="Forest Engineering" data-thesis-es="Memoria: por definir" data-thesis-en="Thesis: TBD" data-bio-es="" data-bio-en="">
+          <div class="ph aspect-square"><img src="assets/team/students/Javiera-Mahan.jpeg" alt="Javiera Mahan" /></div>
+          <div class="p-3">
+            <div class="font-semibold text-f-900 text-sm leading-tight">Javiera Mahan</div>
+            <div class="text-f-500 text-[.65rem] font-bold uppercase tracking-wide mt-0.5"><span data-es>Ing. Forestal</span><span data-en>Forest Eng.</span></div>
+            <div class="mt-1.5 text-[.6rem] font-semibold text-f-400 flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span data-es>Ver memoria</span><span data-en>View thesis</span></div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl sh overflow-hidden cursor-pointer profile-card group" onclick="openProfile(this)" data-type="student" data-photo="assets/team/students/Juan Manuel-González.jpeg" data-name="Juan Manuel González" data-role-es="Estudiante de Pregrado" data-role-en="Undergraduate Student" data-career-es="Ingeniería Forestal" data-career-en="Forest Engineering" data-thesis-es="Memoria: por definir" data-thesis-en="Thesis: TBD" data-bio-es="" data-bio-en="">
+          <div class="ph aspect-square"><img src="assets/team/students/Juan Manuel-González.jpeg" alt="Juan Manuel González" /></div>
+          <div class="p-3">
+            <div class="font-semibold text-f-900 text-sm leading-tight">Juan Manuel González</div>
+            <div class="text-f-500 text-[.65rem] font-bold uppercase tracking-wide mt-0.5"><span data-es>Ing. Forestal</span><span data-en>Forest Eng.</span></div>
+            <div class="mt-1.5 text-[.6rem] font-semibold text-f-400 flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span data-es>Ver memoria</span><span data-en>View thesis</span></div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl sh overflow-hidden cursor-pointer profile-card group" onclick="openProfile(this)" data-type="student" data-photo="assets/team/students/Natalia-Ayala.jpeg" data-name="Natalia Ayala" data-role-es="Estudiante de Pregrado" data-role-en="Undergraduate Student" data-career-es="Ingeniería Forestal" data-career-en="Forest Engineering" data-thesis-es="Memoria: por definir" data-thesis-en="Thesis: TBD" data-bio-es="" data-bio-en="">
+          <div class="ph aspect-square"><img src="assets/team/students/Natalia-Ayala.jpeg" alt="Natalia Ayala" /></div>
+          <div class="p-3">
+            <div class="font-semibold text-f-900 text-sm leading-tight">Natalia Ayala</div>
+            <div class="text-f-500 text-[.65rem] font-bold uppercase tracking-wide mt-0.5"><span data-es>Ing. Forestal</span><span data-en>Forest Eng.</span></div>
+            <div class="mt-1.5 text-[.6rem] font-semibold text-f-400 flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span data-es>Ver memoria</span><span data-en>View thesis</span></div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl sh overflow-hidden cursor-pointer profile-card group" onclick="openProfile(this)" data-type="student" data-photo="assets/team/students/Skarlet-Soto.jpeg" data-name="Skarlet Soto" data-role-es="Estudiante de Pregrado" data-role-en="Undergraduate Student" data-career-es="Ingeniería Forestal" data-career-en="Forest Engineering" data-thesis-es="Memoria: por definir" data-thesis-en="Thesis: TBD" data-bio-es="" data-bio-en="">
+          <div class="ph aspect-square"><img src="assets/team/students/Skarlet-Soto.jpeg" alt="Skarlet Soto" /></div>
+          <div class="p-3">
+            <div class="font-semibold text-f-900 text-sm leading-tight">Skarlet Soto</div>
+            <div class="text-f-500 text-[.65rem] font-bold uppercase tracking-wide mt-0.5"><span data-es>Ing. Forestal</span><span data-en>Forest Eng.</span></div>
+            <div class="mt-1.5 text-[.6rem] font-semibold text-f-400 flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span data-es>Ver memoria</span><span data-en>View thesis</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Interns -->
+    <div class="mt-12">
+      <div class="sdiv"><span data-es>Pasantes</span><span data-en>Interns</span></div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+        <div class="bg-white rounded-xl sh overflow-hidden cursor-pointer profile-card group"
+             onclick="openProfile(this)"
+             data-type="intern"
+             data-photo="assets/team/interns/Maé-Brunet.jpeg"
+             data-name="Maé Brunet"
+             data-role-es="Pasante"
+             data-role-en="Intern"
+             data-career-es=""
+             data-career-en=""
+             data-bio-es="Pasante del laboratorio. Descripción por completar."
+             data-bio-en="Lab intern. Description to be completed.">
+          <div class="ph aspect-square"><img src="assets/team/interns/Maé-Brunet.jpeg" alt="Maé Brunet" /></div>
+          <div class="p-3">
+            <div class="font-semibold text-f-900 text-sm leading-tight">Maé Brunet</div>
+            <div class="text-gray-400 text-[.65rem] font-bold uppercase tracking-wide mt-0.5"><span data-es>Pasante</span><span data-en>Intern</span></div>
+            <div class="mt-1.5 text-[.6rem] font-semibold text-f-400 flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span data-es>Ver perfil</span><span data-en>View profile</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Former students / collaborators -->
+    <div class="mt-14">
+      <div class="sdiv"><span data-es>Exalumnos y Colaboradores</span><span data-en>Former Students &amp; Collaborators</span></div>
+
+      <!-- Table header -->
+      <div class="hidden sm:grid grid-cols-[1fr_auto_2fr_auto] gap-x-6 px-4 pb-2 text-[.65rem] font-bold uppercase tracking-widest text-f-500 border-b border-f-100">
+        <span data-es>Nombre</span><span data-en>Name</span>
+        <span data-es>Carrera</span><span data-en>Degree</span>
+        <span data-es>Título de la memoria</span><span data-en>Thesis title</span>
+        <span data-es>Año</span><span data-en>Year</span>
+      </div>
+
+      <!-- Rows — duplica este bloque por cada exalumno/colaborador -->
+      <div class="divide-y divide-f-50">
+
+        <div class="grid sm:grid-cols-[1fr_auto_2fr_auto] gap-x-6 gap-y-0.5 items-baseline px-4 py-3 hover:bg-f-50 rounded-xl transition-colors">
+          <div class="font-semibold text-f-900 text-sm">Nombre Apellido</div>
+          <div class="text-f-500 text-[.68rem] font-bold uppercase tracking-wide whitespace-nowrap"><span data-es>Ing. Forestal</span><span data-en>Forest Eng.</span></div>
+          <div class="text-gray-500 text-sm italic sm:col-start-3"><span data-es>Título de la memoria aquí</span><span data-en>Thesis title here</span></div>
+          <div class="text-gray-400 text-xs font-medium sm:text-right">2025</div>
+        </div>
+
+        <div class="grid sm:grid-cols-[1fr_auto_2fr_auto] gap-x-6 gap-y-0.5 items-baseline px-4 py-3 hover:bg-f-50 rounded-xl transition-colors">
+          <div class="font-semibold text-f-900 text-sm">Nombre Apellido</div>
+          <div class="text-f-500 text-[.68rem] font-bold uppercase tracking-wide whitespace-nowrap"><span data-es>Ing. Forestal</span><span data-en>Forest Eng.</span></div>
+          <div class="text-gray-500 text-sm italic sm:col-start-3"><span data-es>Título de la memoria aquí</span><span data-en>Thesis title here</span></div>
+          <div class="text-gray-400 text-xs font-medium sm:text-right">2025</div>
+        </div>
+
+        <div class="grid sm:grid-cols-[1fr_auto_2fr_auto] gap-x-6 gap-y-0.5 items-baseline px-4 py-3 hover:bg-f-50 rounded-xl transition-colors">
+          <div class="font-semibold text-f-900 text-sm">Nombre Apellido</div>
+          <div class="text-f-500 text-[.68rem] font-bold uppercase tracking-wide whitespace-nowrap"><span data-es>Ing. Forestal</span><span data-en>Forest Eng.</span></div>
+          <div class="text-gray-500 text-sm italic sm:col-start-3"><span data-es>Título de la memoria aquí</span><span data-en>Thesis title here</span></div>
+          <div class="text-gray-400 text-xs font-medium sm:text-right">2024</div>
+        </div>
+
+        <div class="grid sm:grid-cols-[1fr_auto_2fr_auto] gap-x-6 gap-y-0.5 items-baseline px-4 py-3 hover:bg-f-50 rounded-xl transition-colors">
+          <div class="font-semibold text-f-900 text-sm">Nombre Apellido</div>
+          <div class="text-f-500 text-[.68rem] font-bold uppercase tracking-wide whitespace-nowrap"><span data-es>Ing. Forestal</span><span data-en>Forest Eng.</span></div>
+          <div class="text-gray-500 text-sm italic sm:col-start-3"><span data-es>Título de la memoria aquí</span><span data-en>Thesis title here</span></div>
+          <div class="text-gray-400 text-xs font-medium sm:text-right">2024</div>
+        </div>
+
+        <div class="grid sm:grid-cols-[1fr_auto_2fr_auto] gap-x-6 gap-y-0.5 items-baseline px-4 py-3 hover:bg-f-50 rounded-xl transition-colors">
+          <div class="font-semibold text-f-900 text-sm">Nombre Apellido</div>
+          <div class="text-f-500 text-[.68rem] font-bold uppercase tracking-wide whitespace-nowrap"><span data-es>Colaborador/a</span><span data-en>Collaborator</span></div>
+          <div class="text-gray-500 text-sm italic sm:col-start-3"><span data-es>Descripción del rol o proyecto</span><span data-en>Role or project description</span></div>
+          <div class="text-gray-400 text-xs font-medium sm:text-right">2023</div>
+        </div>
+
+      </div>
+      <!-- fin de filas -->
+
+    </div>
+
+    <!-- group photo -->
+    <div class="mt-16 rounded-2xl overflow-hidden sh">
+      <img src="assets/team/group/group.jpeg" alt="Foto grupal ACGB.Lab" class="w-full max-h-[420px] object-cover" />
+    </div>
+    <p class="text-center text-xs text-gray-400 mt-3 italic"><span data-es>Equipo ACGB.Lab</span><span data-en>ACGB.Lab team</span></p>
+  </div>
+</section>
+
+<!-- ===== Research ===== -->
+<section id="research" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-6">
+    <p class="lbl"><span data-es>Líneas de trabajo</span><span data-en>Lines of work</span></p>
+    <h2 class="ttl"><span data-es>Investigación</span><span data-en>Research</span></h2>
+    <p class="sub"><span data-es>Áreas temáticas en las que trabajamos actualmente.</span><span data-en>Thematic areas we are currently working on.</span></p>
+
+    <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- Hydraulics -->
+      <div class="bg-white sh rounded-2xl overflow-hidden flex flex-col">
+        <div class="rs-g h-1.5 w-full"></div>
+        <div class="overflow-hidden">
+          <img src="assets/fieldwork/grafico_cavitacion.png" alt="Gráfico de cavitación" class="res-media" />
+        </div>
+        <div class="p-6 flex flex-col gap-2.5 flex-1">
+          <span class="tag tag-g"><span data-es>Fisiología Forestal</span><span data-en>Forest Physiology</span></span>
+          <h3 class="font-display text-f-900 text-lg leading-snug"><span data-es>Hidráulica de Árboles y Resistencia a la Sequía</span><span data-en>Tree Hydraulics and Drought Resistance</span></h3>
+          <p class="text-gray-500 text-sm leading-relaxed flex-1">
+            <span data-es>Estudiamos la resistencia a la cavitación xilemática en especies leñosas nativas de Chile, incluyendo esclerófilas y <em>Nothofagus</em>. Investigamos la variación intraespecífica frente al estrés hídrico para predecir la vulnerabilidad de los bosques ante sequías más intensas.</span>
+            <span data-en>We study xylem cavitation resistance in native woody species of Chile, including sclerophylls and <em>Nothofagus</em>, investigating intraspecific variation under water stress to predict forest vulnerability to increasing drought.</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Phenology -->
+      <div class="bg-white sh rounded-2xl overflow-hidden flex flex-col">
+        <div class="rs-b h-1.5 w-full"></div>
+        <div class="overflow-hidden">
+          <img src="assets/fieldwork/phenology.gif" alt="Fenología forestal" class="res-media" />
+        </div>
+        <div class="p-6 flex flex-col gap-2.5 flex-1">
+          <span class="tag tag-b"><span data-es>Teledetección</span><span data-en>Remote Sensing</span></span>
+          <h3 class="font-display text-f-900 text-lg leading-snug"><span data-es>Fenología Forestal y Monitoreo de Ecosistemas</span><span data-en>Forest Phenology and Ecosystem Monitoring</span></h3>
+          <p class="text-gray-500 text-sm leading-relaxed flex-1">
+            <span data-es>Utilizamos fotografía digital repetida, imágenes satelitales y sensores remotos para monitorear el desarrollo fenológico del dosel. Integramos señales de color de copa con modelos de intercambio de carbono y agua.</span>
+            <span data-en>We use repeat digital photography, satellite imagery, and remote sensors to monitor canopy phenological development, integrating canopy colour signals with carbon and water exchange models.</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Optical / Climate -->
+      <div class="bg-white sh rounded-2xl overflow-hidden flex flex-col">
+        <div class="rs-a h-1.5 w-full"></div>
+        <div class="overflow-hidden">
+          <img src="assets/fieldwork/óptico_Ulmo.gif" alt="Método óptico Ulmo" class="res-media" />
+        </div>
+        <div class="p-6 flex flex-col gap-2.5 flex-1">
+          <span class="tag tag-a"><span data-es>Cambio Climático</span><span data-en>Climate Change</span></span>
+          <h3 class="font-display text-f-900 text-lg leading-snug"><span data-es>Impactos del Cambio Climático en Bosques Chilenos</span><span data-en>Climate Change Impacts on Chilean Forests</span></h3>
+          <p class="text-gray-500 text-sm leading-relaxed flex-1">
+            <span data-es>Analizamos cómo el cambio climático afecta la distribución, función y dinámica de los bosques de Chile. Modelamos el balance hídrico y el <em>Time of Emergence</em> de condiciones sin precedentes en ecosistemas mediterráneos.</span>
+            <span data-en>We analyse how climate change affects the distribution, function, and dynamics of Chilean forests, modelling water balance and the <em>Time of Emergence</em> of unprecedented conditions in Mediterranean ecosystems.</span>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== Fieldwork ===== -->
+<section id="fieldwork" class="py-24" style="background:#0e2318">
+  <div class="max-w-7xl mx-auto px-6">
+    <p class="lbl text-f-300"><span data-es>Divulgación y terreno</span><span data-en>Outreach & fieldwork</span></p>
+    <h2 class="ttl" style="color:#fff"><span data-es>Trabajo en Terreno y Difusión</span><span data-en>Fieldwork and Outreach</span></h2>
+    <p class="text-f-300 text-sm mt-3 mb-10 leading-relaxed">
+      <span data-es>Registros de nuestras salidas a campo, experimentos en sitio y actividades de difusión científica.</span>
+      <span data-en>Records of our field trips, on-site experiments, and science communication activities.</span>
+    </p>
+
+    <div class="grid lg:grid-cols-2 gap-6 items-start">
+      <!-- Video -->
+      <div class="rounded-2xl overflow-hidden" style="background:#000;box-shadow:0 8px 32px rgba(0,0,0,.4)">
+        <video controls preload="metadata" class="w-full max-h-[380px]">
+          <source src="assets/documents/Los_bosques_sedientos_de_Chile.mp4" type="video/mp4">
+        </video>
+        <div class="px-5 py-3">
+          <p class="text-f-300 text-xs italic">
+            <span data-es>"Los bosques sedientos de Chile" — divulgación sobre el impacto de la sequía en los bosques.</span>
+            <span data-en>"Los bosques sedientos de Chile" — outreach on the impact of drought on Chilean forests.</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Fieldwork images -->
+      <div class="grid grid-cols-2 gap-4">
+        <div class="rounded-xl overflow-hidden" style="box-shadow:0 4px 16px rgba(0,0,0,.3)">
+          <img src="assets/fieldwork/Terreno1.png" alt="Trabajo en terreno" class="w-full h-48 object-cover" />
+        </div>
+        <div class="rounded-xl overflow-hidden" style="box-shadow:0 4px 16px rgba(0,0,0,.3)">
+          <img src="assets/fieldwork/Método_óptico.png" alt="Método óptico" class="w-full h-48 object-cover" />
+        </div>
+        <!-- placeholder slots for future photos -->
+        <div class="rounded-xl bg-f-900 border border-f-700 h-24 flex items-center justify-center text-f-500 text-xs italic col-span-2">
+          <span data-es>+ Agrega fotos de terreno a assets/fieldwork/</span>
+          <span data-en>+ Add fieldwork photos to assets/fieldwork/</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Publications ===== -->
+<section id="publications" class="py-24 bg-f-50">
+  <div class="max-w-7xl mx-auto px-6">
+    <p class="lbl"><span data-es>Publicaciones y recursos</span><span data-en>Publications & resources</span></p>
+    <h2 class="ttl"><span data-es>Publicaciones y Documentos</span><span data-en>Publications and Documents</span></h2>
+    <p class="sub"><span data-es>Artículos científicos, currículum del investigador principal y materiales descargables.</span><span data-en>Scientific articles, PI curriculum vitae, and downloadable materials.</span></p>
+
+    <div class="mt-10 flex flex-col gap-3">
+
+      <div class="doc">
+        <div class="text-2xl flex-shrink-0">📄</div>
+        <div class="flex-1 min-w-0">
+          <div class="font-semibold text-f-900 text-sm leading-snug">The Time of Emergence (ToE) of the Andean Mediterranean sclerophyllous forest of <em>Quillaja saponaria</em> and <em>Lithraea caustica</em></div>
+          <div class="text-gray-400 text-xs mt-1">Martínez, Chadwick &amp; Plaza-Aguilar · <em>Forest Ecology and Management</em> · 2023 · DOI: 10.1016/j.foreco.2023.121169</div>
+        </div>
+        <a href="assets/research/1-s2.0-S0378112723004036-main.pdf" class="bo flex-shrink-0 self-center" target="_blank" rel="noopener"><span data-es>Descargar</span><span data-en>Download</span></a>
+      </div>
+
+      <div class="doc">
+        <div class="text-2xl flex-shrink-0">📄</div>
+        <div class="flex-1 min-w-0">
+          <div class="font-semibold text-f-900 text-sm leading-snug">Interpreting canopy development and physiology using a European phenology camera network at flux sites</div>
+          <div class="text-gray-400 text-xs mt-1">Wingate, Ogée, Cremonese, Plaza-Aguilar et al. · <em>Biogeosciences</em> · 2015 · DOI: 10.5194/bg-12-5995-2015</div>
+        </div>
+        <a href="assets/research/Wingate et al. - 2015 - Interpreting canopy development and physiology using a European phenology camera network at flux sites.pdf" class="bo flex-shrink-0 self-center" target="_blank" rel="noopener"><span data-es>Descargar</span><span data-en>Download</span></a>
+      </div>
+
+      <div class="doc">
+        <div class="text-2xl flex-shrink-0">📄</div>
+        <div class="flex-1 min-w-0">
+          <div class="font-semibold text-f-900 text-sm leading-snug">Genetic variation of drought-induced cavitation resistance among <em>Pinus hartwegii</em> populations from an altitudinal gradient</div>
+          <div class="text-gray-400 text-xs mt-1">Sáenz-Romero, Lamy, Plaza-Aguilar et al. · <em>Acta Physiologiae Plantarum</em> · 2013 · DOI: 10.1007/s11738-013-1321-y</div>
+        </div>
+        <a href="assets/research/Sáenz-Romero et al. - 2013 - Genetic variation of drought-induced cavitation resistance among Pinus hartwegii populations from an altit.pdf" class="bo flex-shrink-0 self-center" target="_blank" rel="noopener"><span data-es>Descargar</span><span data-en>Download</span></a>
+      </div>
+
+      <div class="doc">
+        <div class="text-2xl flex-shrink-0">📋</div>
+        <div class="flex-1 min-w-0">
+          <div class="font-semibold text-f-900 text-sm">Curriculum Vitae — Dr. Andrés Plaza Aguilar</div>
+          <div class="text-gray-400 text-xs mt-1"><span data-es>Investigador Principal · ACGB.Lab · Universidad de Chile</span><span data-en>Principal Investigator · ACGB.Lab · Universidad de Chile</span></div>
+        </div>
+        <a href="assets/documents/CV_Andres_Plaza_EN.pdf" class="bo flex-shrink-0 self-center" target="_blank" rel="noopener"><span data-es>Descargar</span><span data-en>Download</span></a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== Contact ===== -->
+<section id="contact" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-6">
+    <p class="lbl"><span data-es>Comunicación</span><span data-en>Get in touch</span></p>
+    <h2 class="ttl"><span data-es>Contacto</span><span data-en>Contact</span></h2>
+    <p class="sub"><span data-es>Si tienes consultas sobre nuestra investigación o quieres colaborar, escríbenos.</span><span data-en>Questions about our research or want to collaborate? Write to us.</span></p>
+
+    <div class="mt-10 grid lg:grid-cols-2 gap-14 items-start">
+      <div>
+        <p class="text-gray-500 text-sm leading-relaxed mb-8">
+          <span data-es>Estamos ubicados en la Facultad de Ciencias Forestales y de la Conservación de la Naturaleza de la Universidad de Chile.</span>
+          <span data-en>We are located at the Faculty of Forest Sciences and Nature Conservation, Universidad de Chile.</span>
+        </p>
+        <div class="flex flex-col gap-5">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-f-50 border border-f-100 flex items-center justify-center flex-shrink-0 text-base">📍</div>
+            <div>
+              <div class="text-[.65rem] font-bold text-f-600 uppercase tracking-wide mb-1"><span data-es>Dirección</span><span data-en>Address</span></div>
+              <div class="text-gray-600 text-sm leading-relaxed"><span data-es>Facultad de Ciencias Forestales y de la Conservación de la Naturaleza<br>Universidad de Chile<br>Av. Santa Rosa 11315, La Pintana, Santiago, Chile</span><span data-en>Faculty of Forest Sciences and Nature Conservation<br>Universidad de Chile<br>Av. Santa Rosa 11315, La Pintana, Santiago, Chile</span></div>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-f-50 border border-f-100 flex items-center justify-center flex-shrink-0 text-base">✉️</div>
+            <div>
+              <div class="text-[.65rem] font-bold text-f-600 uppercase tracking-wide mb-1">Email</div>
+              <a href="mailto:andres.plaza@uchile.cl" class="text-f-600 text-sm font-medium hover:text-f-800 transition-colors">andres.plaza@uchile.cl</a>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-f-50 border border-f-100 flex items-center justify-center flex-shrink-0 text-base">📱</div>
+            <div>
+              <div class="text-[.65rem] font-bold text-f-600 uppercase tracking-wide mb-1"><span data-es>Redes sociales</span><span data-en>Social media</span></div>
+              <div class="flex items-center gap-3 mt-1">
+                <a href="https://www.instagram.com/acgb.lab/" target="_blank" rel="noopener" class="flex items-center gap-1.5 text-f-600 text-sm font-medium hover:text-f-800 transition-colors">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                  @acgb.lab
+                </a>
+                <a href="https://cl.linkedin.com/company/acgblab" target="_blank" rel="noopener" class="flex items-center gap-1.5 text-f-600 text-sm font-medium hover:text-f-800 transition-colors">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                  ACGBLab
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <form onsubmit="return false;" class="flex flex-col gap-4">
+        <input type="text"  class="ff" placeholder="Tu nombre" required />
+        <input type="email" class="ff" placeholder="Tu correo electrónico" required />
+        <textarea           class="ff" placeholder="Tu mensaje" required></textarea>
+        <button type="submit" class="bp self-start"><span data-es>Enviar mensaje</span><span data-en>Send message</span></button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer style="background:#071510">
+  <div class="max-w-7xl mx-auto px-6 py-12">
+    <div class="flex flex-col md:flex-row gap-8 justify-between items-start">
+      <!-- Brand -->
+      <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-3">
+          <img src="assets/logo/logo.png" alt="ACGB.Lab" class="h-10 w-10 object-contain rounded-lg opacity-90" />
+          <div>
+            <div class="font-display text-white font-semibold text-base">ACGB.Lab</div>
+            <div class="text-f-400 text-xs"><span data-es>Universidad de Chile</span><span data-en>Universidad de Chile</span></div>
+          </div>
+        </div>
+        <img src="assets/logo/Logo_Facultaad.png" alt="Facultad Cs. Forestales" class="h-8 object-contain opacity-70 self-start" />
+        <!-- Social -->
+        <div class="flex items-center gap-3 mt-1">
+          <a href="https://www.instagram.com/acgb.lab/" target="_blank" rel="noopener" aria-label="Instagram" class="text-f-400 hover:text-white transition-colors">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="https://cl.linkedin.com/company/acgblab" target="_blank" rel="noopener" aria-label="LinkedIn" class="text-f-400 hover:text-white transition-colors">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Nav -->
+      <nav class="flex flex-wrap gap-x-8 gap-y-2">
+        <a href="#about"       class="text-f-400 text-sm hover:text-white transition-colors"><span data-es>Sobre el Lab</span><span data-en>About</span></a>
+        <a href="#team"        class="text-f-400 text-sm hover:text-white transition-colors"><span data-es>Equipo</span><span data-en>Team</span></a>
+        <a href="#research"    class="text-f-400 text-sm hover:text-white transition-colors"><span data-es>Investigación</span><span data-en>Research</span></a>
+        <a href="#fieldwork"   class="text-f-400 text-sm hover:text-white transition-colors"><span data-es>Terreno</span><span data-en>Fieldwork</span></a>
+        <a href="#publications"class="text-f-400 text-sm hover:text-white transition-colors"><span data-es>Publicaciones</span><span data-en>Publications</span></a>
+        <a href="#contact"     class="text-f-400 text-sm hover:text-white transition-colors"><span data-es>Contacto</span><span data-en>Contact</span></a>
+      </nav>
+
+      <!-- Address -->
+      <div class="text-f-500 text-xs leading-relaxed max-w-xs">
+        <div class="text-f-400 text-xs mb-1 font-semibold"><span data-es>Ubicación</span><span data-en>Location</span></div>
+        <span data-es>Facultad de Ciencias Forestales y de la Conservación de la Naturaleza<br>Av. Santa Rosa 11315, La Pintana<br>Santiago, Chile</span>
+        <span data-en>Faculty of Forest Sciences and Nature Conservation<br>Av. Santa Rosa 11315, La Pintana<br>Santiago, Chile</span>
+      </div>
+    </div>
+
+    <div class="border-t border-white/10 mt-10 pt-6 text-center">
+      <p class="text-f-600 text-xs">
+        <span data-es>© 2026 ACGB.Lab — Laboratorio de Adaptación Climática y Gestión del Bosque · Universidad de Chile. Todos los derechos reservados.</span>
+        <span data-en>© 2026 ACGB.Lab — Climate Adaptation and Forest Management Laboratory · Universidad de Chile. All rights reserved.</span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function setLang(l) {
+    document.body.classList.toggle('en', l==='en');
+    document.getElementById('btn-es').className = l==='es'
+      ? 'px-3 py-1 rounded-full text-xs font-bold bg-f-800 text-white transition-colors'
+      : 'px-3 py-1 rounded-full text-xs font-bold text-gray-500 hover:text-gray-800 transition-colors';
+    document.getElementById('btn-en').className = l==='en'
+      ? 'px-3 py-1 rounded-full text-xs font-bold bg-f-800 text-white transition-colors'
+      : 'px-3 py-1 rounded-full text-xs font-bold text-gray-500 hover:text-gray-800 transition-colors';
+    document.documentElement.lang = l;
+  }
+
+  document.getElementById('ham').addEventListener('click', () =>
+    document.getElementById('mmenu').classList.toggle('hidden'));
+  document.querySelectorAll('#mmenu a').forEach(a =>
+    a.addEventListener('click', () => document.getElementById('mmenu').classList.add('hidden')));
+
+  // active nav
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY + 80;
+    document.querySelectorAll('section[id]').forEach(s => {
+      const on = y >= s.offsetTop && y < s.offsetTop + s.offsetHeight;
+      document.querySelectorAll(`.nl[href="#${s.id}"]`).forEach(l => l.classList.toggle('active', on));
+    });
+  }, {passive:true});
+
+  // ---- Profile modal ----
+  function openProfile(el) {
+    const lang = document.body.classList.contains('en') ? 'en' : 'es';
+    const type = el.dataset.type;
+    const photo = el.dataset.photo;
+    const name  = el.dataset.name;
+    const role  = lang === 'en' ? el.dataset.roleEn  : el.dataset.roleEs;
+    const career= lang === 'en' ? el.dataset.careerEn : el.dataset.careerEs;
+    const bio   = lang === 'en' ? el.dataset.bioEn   : el.dataset.bioEs;
+    const thesis= lang === 'en' ? el.dataset.thesisEn : el.dataset.thesisEs;
+    const email = el.dataset.email;
+
+    const m = document.getElementById('profile-modal');
+    m.querySelector('#pm-photo').src = photo || '';
+    m.querySelector('#pm-photo').alt = name;
+    m.querySelector('#pm-name').textContent = name;
+    m.querySelector('#pm-role').textContent = role || '';
+    m.querySelector('#pm-career').textContent = career || '';
+
+    const bioWrap = m.querySelector('#pm-bio-wrap');
+    const bioEl   = m.querySelector('#pm-bio');
+    if (bio) { bioEl.textContent = bio; bioWrap.classList.remove('hidden'); }
+    else      { bioWrap.classList.add('hidden'); }
+
+    const thesisWrap = m.querySelector('#pm-thesis-wrap');
+    const thesisEl   = m.querySelector('#pm-thesis');
+    if (thesis && (type === 'student' || type === 'intern')) {
+      thesisEl.textContent = thesis;
+      thesisWrap.classList.remove('hidden');
+    } else { thesisWrap.classList.add('hidden'); }
+
+    const emailWrap = m.querySelector('#pm-email-wrap');
+    const emailEl   = m.querySelector('#pm-email');
+    if (email) { emailEl.textContent = email; emailEl.href = 'mailto:' + email; emailWrap.classList.remove('hidden'); }
+    else       { emailWrap.classList.add('hidden'); }
+
+    m.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeProfile() {
+    document.getElementById('profile-modal').classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('profile-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeProfile();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProfile(); });
+</script>
+
+<!-- Profile Modal -->
+<div id="profile-modal" class="hidden fixed inset-0 z-[200] flex items-center justify-center p-4"
+     style="background:rgba(7,21,16,0.72);backdrop-filter:blur(6px)">
+  <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden"
+       style="box-shadow:0 32px 80px rgba(7,21,16,0.45)">
+    <!-- close button -->
+    <button onclick="closeProfile()" aria-label="Cerrar"
+            class="absolute top-4 right-4 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-f-50 hover:bg-f-100 text-f-700 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-f-600">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="3" x2="13" y2="13"/><line x1="13" y1="3" x2="3" y2="13"/>
+      </svg>
+    </button>
+    <!-- photo -->
+    <div class="w-full h-56 bg-f-100 overflow-hidden">
+      <img id="pm-photo" src="" alt="" class="w-full h-full object-cover object-top">
+    </div>
+    <!-- content -->
+    <div class="p-6 pt-5">
+      <p id="pm-role" class="text-f-600 text-xs font-bold uppercase tracking-widest mb-1"></p>
+      <h3 id="pm-name" class="text-f-950 font-bold text-2xl leading-tight mb-0.5" style="font-family:'Playfair Display',serif"></h3>
+      <p id="pm-career" class="text-gray-400 text-sm mb-4"></p>
+      <div id="pm-bio-wrap">
+        <p id="pm-bio" class="text-gray-600 text-sm leading-relaxed"></p>
+      </div>
+      <div id="pm-thesis-wrap" class="mt-4 p-4 rounded-xl" style="background:#f0faf4">
+        <p class="text-f-700 text-[.65rem] font-bold uppercase tracking-widest mb-1">Memoria de título</p>
+        <p id="pm-thesis" class="text-f-900 text-sm leading-snug font-medium italic"></p>
+      </div>
+      <div id="pm-email-wrap" class="mt-4 flex items-center gap-2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2d6a4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        <a id="pm-email" href="#" class="text-f-700 text-sm hover:text-f-900 underline underline-offset-2 transition-colors"></a>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
