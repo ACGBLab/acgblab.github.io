@@ -222,7 +222,7 @@
           <span data-en>The <strong>Climate Adaptation and Forest Management Laboratory (ACGB.Lab)</strong> investigates the physiological and ecological mechanisms of forest ecosystems facing climate change. We integrate tree physiology, silviculture, and remote data to address current challenges in the conservation and sustainable management of Chile's forests.</span>
         </p>
         <p class="sub mt-4">
-          <span data-es>Formamos parte del Departamento de Manejo de Recursos Forestales y Medioambiente de la <strong>Facultad de Ciencias Forestales y de la Conservación de la Naturaleza, Universidad de Chile</strong>. Colaboramos con Entidades Públicas, Empresas Forestales y redes globales de investigación forestal.</span>
+          <span data-es>Formamos parte del Departamento de Manejo de Recursos Forestales y Medioambiente de la <strong>Facultad de Ciencias Forestales y de la Conservación de la Naturaleza, Universidad de Chile</strong>. Colaboramos con Servicios Públicos, Empresas Forestales y redes globales de investigación forestal.</span>
           <span data-en>We are part of the Department of Forest Management and the Environment at the <strong>Faculty of Forest Sciences and Nature Conservation, Universidad de Chile</strong>. We collaborate with Public Services, Forestry Companies, and global forest research networks.</span>
         </p>
       </div>
@@ -255,7 +255,7 @@
            data-role-en="Principal Investigator · Assistant Professor"
            data-career-es="Universidad de Chile"
            data-career-en="Universidad de Chile"
-           data-bio-es="Doctor en Ciencias de las Plantas (University of Cambridge, 2015). MSc en Ecología de Ecosistemas Terrestres, Université de Bordeaux. Ingeniero Forestal, Universidad de Talca. Profesor Asistente en el Departamento de Manejo de Recursos Forestales y Medioambiente de la Facultad de Ciencias Forestales, Universidad de Chile, desde 2017. Sus líneas de investigación incluyen la fisiología ecológica de árboles y bosques, el estrés hídrico y la resistencia a la cavitación xilemática, la fenología del dosel forestal, y el monitoreo de ecosistemas mediante fotografía digital y teledetección. Ha colaborado con Forest Research (UK), INRA Bordeaux y redes internacionales como EUROPhen/ICOS y GLEON."
+           data-bio-es="Doctor en Ciencias de las Plantas (University of Cambridge, 2015). MSc en Ecología de Ecosistemas Terrestres, Université de Bordeaux. Ingeniero Forestal, Universidad de Talca. Profesor Asistente en el Departamento de Gestión Forestal y su Medioambiente de la Facultad de Ciencias Forestales, Universidad de Chile, desde 2017. Sus líneas de investigación incluyen la fisiología ecológica de árboles y bosques, el estrés hídrico y la resistencia a la cavitación xilemática, la fenología del dosel forestal, y el monitoreo de ecosistemas mediante fotografía digital y datos remotos. Ha colaborado con Forest Research (UK), INRA Bordeaux y redes internacionales como EUROPhen/ICOS y GLEON."
            data-bio-en="Doctor of Philosophy in Plant Sciences (University of Cambridge, 2015). MSc in Terrestrial Ecosystem Ecology, Université de Bordeaux. Forest Engineer, Universidad de Talca. Assistant Professor at the Department of Forest Management and the Environment, Faculty of Forest Sciences and Nature Conservation, Universidad de Chile, since 2017. His research focuses on ecological physiology of trees and forests, water stress and xylem cavitation resistance, forest canopy phenology, and ecosystem monitoring via digital photography and remote sensing. He has collaborated with Forest Research (UK), INRA Bordeaux, and international networks such as EUROPhen/ICOS and GLEON."
            data-email="andres.plaza@uchile.cl">
         <div class="flex flex-col sm:flex-row">
@@ -740,6 +740,8 @@
         </div>
         <!-- placeholder slots for future photos -->
         <div class="rounded-xl bg-f-900 border border-f-700 h-24 flex items-center justify-center text-f-500 text-xs italic col-span-2">
+          <span data-es>+ Agrega fotos de terreno a assets/fieldwork/</span>
+          <span data-en>+ Add fieldwork photos to assets/fieldwork/</span>
         </div>
       </div>
     </div>
@@ -816,7 +818,7 @@
             <div class="w-10 h-10 rounded-xl bg-f-50 border border-f-100 flex items-center justify-center flex-shrink-0 text-base">✉️</div>
             <div>
               <div class="text-[.65rem] font-bold text-f-600 uppercase tracking-wide mb-1">Email</div>
-              <a href="mailto:acgb.lab@gmail.com" class="text-f-600 text-sm font-medium hover:text-f-800 transition-colors">acgb.lab@gmail.com</a>
+              <a href="mailto:andres.plaza@uchile.cl" class="text-f-600 text-sm font-medium hover:text-f-800 transition-colors">andres.plaza@uchile.cl</a>
             </div>
           </div>
           <div class="flex items-start gap-4">
@@ -961,6 +963,9 @@
     if (email) { emailEl.textContent = email; emailEl.href = 'mailto:' + email; emailWrap.classList.remove('hidden'); }
     else       { emailWrap.classList.add('hidden'); }
 
+    const teachingWrap = m.querySelector('#pm-teaching');
+    teachingWrap.classList.toggle('hidden', type !== 'pi');
+
     m.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
   }
@@ -1007,6 +1012,42 @@
       <div id="pm-email-wrap" class="mt-4 flex items-center gap-2">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2d6a4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
         <a id="pm-email" href="#" class="text-f-700 text-sm hover:text-f-900 underline underline-offset-2 transition-colors"></a>
+      </div>
+      <!-- Teaching — solo visible para el PI -->
+      <div id="pm-teaching" class="hidden mt-5 pt-5 border-t border-f-100">
+        <p class="text-f-700 text-[.65rem] font-bold uppercase tracking-widest mb-3"><span data-es>Docencia</span><span data-en>Teaching</span></p>
+        <div class="space-y-3">
+          <div>
+            <p class="text-f-600 text-[.65rem] font-bold uppercase tracking-wider mb-1.5"><span data-es>Pregrado</span><span data-en>Undergraduate</span></p>
+            <ul class="space-y-1">
+              <li class="flex gap-2 text-sm">
+                <span class="text-gray-600"><span data-es>Producción Forestal</span><span data-en>Forest Production</span></span>
+                <span class="text-gray-400 text-xs self-center whitespace-nowrap"><span data-es>· Ing. Forestal</span><span data-en>· Forest Eng.</span></span>
+              </li>
+              <li class="flex gap-2 text-sm">
+                <span class="text-gray-600"><span data-es>Análisis Forestal con R</span><span data-en>Forest Analysis with R</span></span>
+                <span class="text-gray-400 text-xs self-center whitespace-nowrap"><span data-es>· Ing. Forestal</span><span data-en>· Forest Eng.</span></span>
+              </li>
+              <li class="flex gap-2 text-sm">
+                <span class="text-gray-600"><span data-es>Taller de Investigación</span><span data-en>Research Workshop</span></span>
+                <span class="text-gray-400 text-xs self-center whitespace-nowrap"><span data-es>· Ing. Forestal</span><span data-en>· Forest Eng.</span></span>
+              </li>
+              <li class="flex gap-2 text-sm">
+                <span class="text-gray-600"><span data-es>Interacción Suelo-Vegetación-Atmósfera</span><span data-en>Soil-Vegetation-Atmosphere Interaction</span></span>
+                <span class="text-gray-400 text-xs self-center whitespace-nowrap"><span data-es>· Ing. en Rec. Hídricos</span><span data-en>· Hydraulic Resources Eng.</span></span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-f-600 text-[.65rem] font-bold uppercase tracking-wider mb-1.5"><span data-es>Posgrado</span><span data-en>Graduate</span></p>
+            <ul class="space-y-1">
+              <li class="flex gap-2 text-sm">
+                <span class="text-gray-600"><span data-es>Estadística Aplicada a los Recursos Naturales Renovables II</span><span data-en>Applied Statistics for Renewable Natural Resources II</span></span>
+                <span class="text-gray-400 text-xs self-center whitespace-nowrap"><span data-es>· Prof. Colaborador</span><span data-en>· Collaborating Prof.</span></span>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
