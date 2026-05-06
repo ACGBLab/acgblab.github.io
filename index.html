@@ -143,8 +143,8 @@
     <!-- Desktop nav -->
     <ul class="hidden md:flex items-center gap-0.5 flex-1 justify-center">
       <li><a href="#about"    class="nl" data-es>Sobre el Lab</a><a href="#about"    class="nl" data-en>About</a></li>
-      <li><a href="#team"     class="nl" data-es>Equipo</a><a href="#team"     class="nl" data-en>Team</a></li>
       <li><a href="#research"     class="nl" data-es>Investigación</a><a href="#research"     class="nl" data-en>Research</a></li>
+      <li><a href="#team"     class="nl" data-es>Equipo</a><a href="#team"     class="nl" data-en>Team</a></li>
       <li><a href="#projects"     class="nl" data-es>Proyectos</a><a href="#projects"     class="nl" data-en>Projects</a></li>
       <li><a href="#teaching"     class="nl" data-es>Docencia</a><a href="#teaching"     class="nl" data-en>Teaching</a></li>
       <li><a href="#fieldwork"    class="nl" data-es>Terreno</a><a href="#fieldwork"    class="nl" data-en>Fieldwork</a></li>
@@ -174,8 +174,8 @@
   <div id="mmenu" class="hidden md:hidden border-t border-white/10 px-5 pb-4 pt-2" style="background:rgba(14,35,24,.98)">
     <ul class="flex flex-col gap-1">
       <li><a href="#about"       class="nl block" data-es>Sobre el Lab</a><a href="#about"       class="nl block" data-en>About</a></li>
-      <li><a href="#team"        class="nl block" data-es>Equipo</a><a href="#team"        class="nl block" data-en>Team</a></li>
       <li><a href="#research"     class="nl block" data-es>Investigación</a><a href="#research"     class="nl block" data-en>Research</a></li>
+      <li><a href="#team"        class="nl block" data-es>Equipo</a><a href="#team"        class="nl block" data-en>Team</a></li>
       <li><a href="#projects"     class="nl block" data-es>Proyectos</a><a href="#projects"     class="nl block" data-en>Projects</a></li>
       <li><a href="#teaching"     class="nl block" data-es>Docencia</a><a href="#teaching"     class="nl block" data-en>Teaching</a></li>
       <li><a href="#fieldwork"    class="nl block" data-es>Terreno</a><a href="#fieldwork"    class="nl block" data-en>Fieldwork</a></li>
@@ -219,7 +219,6 @@
   <div class="max-w-7xl mx-auto px-6">
     <div class="grid lg:grid-cols-2 gap-16 items-center">
       <div>
-        <p class="lbl"><span data-es>Quiénes somos</span><span data-en>Who we are</span></p>
         <h2 class="ttl"><span data-es>Sobre el Laboratorio</span><span data-en>About the Lab</span></h2>
         <p class="sub mt-5">
           <span data-es>El <strong>Laboratorio de Adaptación Climática y Gestión del Bosque (ACGB.Lab)</strong> investiga los mecanismos fisiológicos y ecológicos de los ecosistemas forestales frente al cambio climático. Integramos fisiología de árboles, silvicultura y datos remotos para abordar desafíos actuales en la conservación y manejo sustentable de los bosques de Chile.</span>
@@ -236,6 +235,67 @@
         </div>
         <p class="text-center text-xs text-gray-400 italic"><span data-es>Equipo ACGB.Lab</span><span data-en>ACGB.Lab team</span></p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Research ===== -->
+<section id="research" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-6">
+    <p class="lbl"><span data-es>Líneas de trabajo</span><span data-en>Lines of work</span></p>
+    <h2 class="ttl"><span data-es>Investigación</span><span data-en>Research</span></h2>
+    <p class="sub"><span data-es>Áreas temáticas en las que trabajamos actualmente.</span><span data-en>Thematic areas we are currently working on.</span></p>
+
+    <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- Hydraulics -->
+      <div class="bg-white sh rounded-2xl overflow-hidden flex flex-col">
+        <div class="rs-g h-1.5 w-full"></div>
+        <div class="overflow-hidden">
+          <img src="assets/fieldwork/grafico_cavitacion.png" alt="Gráfico de cavitación" class="res-media" />
+        </div>
+        <div class="p-6 flex flex-col gap-2.5 flex-1">
+          <span class="tag tag-g"><span data-es>Fisiología Forestal</span><span data-en>Forest Physiology</span></span>
+          <h3 class="font-display text-f-900 text-lg leading-snug"><span data-es>Hidráulica de Árboles y Resistencia a la Sequía</span><span data-en>Tree Hydraulics and Drought Resistance</span></h3>
+          <p class="text-gray-500 text-sm leading-relaxed flex-1">
+            <span data-es>Estudiamos la resistencia a la cavitación xilemática en especies leñosas nativas de Chile, incluyendo esclerófilas y <em>Nothofagus</em>. Investigamos la variación intraespecífica frente al estrés hídrico para predecir la vulnerabilidad de los bosques ante sequías más intensas.</span>
+            <span data-en>We study xylem cavitation resistance in native woody species of Chile, including sclerophylls and <em>Nothofagus</em>, investigating intraspecific variation under water stress to predict forest vulnerability to increasing drought.</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Phenology -->
+      <div class="bg-white sh rounded-2xl overflow-hidden flex flex-col">
+        <div class="rs-b h-1.5 w-full"></div>
+        <div class="overflow-hidden">
+          <img src="assets/fieldwork/phenology.gif" alt="Fenología forestal" class="res-media" />
+        </div>
+        <div class="p-6 flex flex-col gap-2.5 flex-1">
+          <span class="tag tag-b"><span data-es>Fenología de Ecosistemas Boscosos</span><span data-en>Forest Ecosystems Phenology</span></span>
+          <h3 class="font-display text-f-900 text-lg leading-snug"><span data-es>Fenología Forestal y Monitoreo de Ecosistemas</span><span data-en>Forest Phenology and Ecosystem Monitoring</span></h3>
+          <p class="text-gray-500 text-sm leading-relaxed flex-1">
+            <span data-es>Utilizamos fotografía digital repetida, imágenes satelitales y sensores remotos para monitorear el desarrollo fenológico del dosel. Integramos señales de color de copa con modelos de intercambio de carbono y agua.</span>
+            <span data-en>We use repeat digital photography, satellite imagery, and remote sensors to monitor canopy phenological development, integrating canopy colour signals with carbon and water exchange models.</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Optical / Climate -->
+      <div class="bg-white sh rounded-2xl overflow-hidden flex flex-col">
+        <div class="rs-a h-1.5 w-full"></div>
+        <div class="overflow-hidden">
+          <img src="assets/fieldwork/optico_Ulmo.gif" alt="Método óptico Ulmo" class="res-media" />
+        </div>
+        <div class="p-6 flex flex-col gap-2.5 flex-1">
+          <span class="tag tag-a"><span data-es>Cambio Climático</span><span data-en>Climate Change</span></span>
+          <h3 class="font-display text-f-900 text-lg leading-snug"><span data-es>Impactos del Cambio Climático en Bosques Chilenos</span><span data-en>Climate Change Impacts on Chilean Forests</span></h3>
+          <p class="text-gray-500 text-sm leading-relaxed flex-1">
+            <span data-es>Analizamos cómo el cambio climático afecta la distribución y funcionamiento de los bosques de Chile. Modelamos el balance hídrico y la interacción suelo-vegetación-atmósfera de condiciones sin precedentes en ecosistemas mediterráneos.</span>
+            <span data-en>We analyse how climate change affects the distribution, function, and dynamics of Chilean forests, modelling water balance and the soil-vegetation-atmosphere interaction of unprecedented conditions in Mediterranean ecosystems.</span>
+          </p>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -647,67 +707,6 @@ Estimación de la Distribución Potencial de Citronella mucronata, Persea lingue
       <img src="assets/team/group/group.jpeg" alt="Foto grupal ACGB.Lab" class="w-full max-h-[420px] object-cover" />
     </div>
     <p class="text-center text-xs text-gray-400 mt-3 italic"><span data-es>Equipo ACGB.Lab</span><span data-en>ACGB.Lab team</span></p>
-  </div>
-</section>
-
-<!-- ===== Research ===== -->
-<section id="research" class="py-24 bg-white">
-  <div class="max-w-7xl mx-auto px-6">
-    <p class="lbl"><span data-es>Líneas de trabajo</span><span data-en>Lines of work</span></p>
-    <h2 class="ttl"><span data-es>Investigación</span><span data-en>Research</span></h2>
-    <p class="sub"><span data-es>Áreas temáticas en las que trabajamos actualmente.</span><span data-en>Thematic areas we are currently working on.</span></p>
-
-    <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-      <!-- Hydraulics -->
-      <div class="bg-white sh rounded-2xl overflow-hidden flex flex-col">
-        <div class="rs-g h-1.5 w-full"></div>
-        <div class="overflow-hidden">
-          <img src="assets/fieldwork/grafico_cavitacion.png" alt="Gráfico de cavitación" class="res-media" />
-        </div>
-        <div class="p-6 flex flex-col gap-2.5 flex-1">
-          <span class="tag tag-g"><span data-es>Fisiología Forestal</span><span data-en>Forest Physiology</span></span>
-          <h3 class="font-display text-f-900 text-lg leading-snug"><span data-es>Hidráulica de Árboles y Resistencia a la Sequía</span><span data-en>Tree Hydraulics and Drought Resistance</span></h3>
-          <p class="text-gray-500 text-sm leading-relaxed flex-1">
-            <span data-es>Estudiamos la resistencia a la cavitación xilemática en especies leñosas nativas de Chile, incluyendo esclerófilas y <em>Nothofagus</em>. Investigamos la variación intraespecífica frente al estrés hídrico para predecir la vulnerabilidad de los bosques ante sequías más intensas.</span>
-            <span data-en>We study xylem cavitation resistance in native woody species of Chile, including sclerophylls and <em>Nothofagus</em>, investigating intraspecific variation under water stress to predict forest vulnerability to increasing drought.</span>
-          </p>
-        </div>
-      </div>
-
-      <!-- Phenology -->
-      <div class="bg-white sh rounded-2xl overflow-hidden flex flex-col">
-        <div class="rs-b h-1.5 w-full"></div>
-        <div class="overflow-hidden">
-          <img src="assets/fieldwork/phenology.gif" alt="Fenología forestal" class="res-media" />
-        </div>
-        <div class="p-6 flex flex-col gap-2.5 flex-1">
-          <span class="tag tag-b"><span data-es>Fenología de Ecosistemas Boscosos</span><span data-en>Forest Ecosystems Phenology</span></span>
-          <h3 class="font-display text-f-900 text-lg leading-snug"><span data-es>Fenología Forestal y Monitoreo de Ecosistemas</span><span data-en>Forest Phenology and Ecosystem Monitoring</span></h3>
-          <p class="text-gray-500 text-sm leading-relaxed flex-1">
-            <span data-es>Utilizamos fotografía digital repetida, imágenes satelitales y sensores remotos para monitorear el desarrollo fenológico del dosel. Integramos señales de color de copa con modelos de intercambio de carbono y agua.</span>
-            <span data-en>We use repeat digital photography, satellite imagery, and remote sensors to monitor canopy phenological development, integrating canopy colour signals with carbon and water exchange models.</span>
-          </p>
-        </div>
-      </div>
-
-      <!-- Optical / Climate -->
-      <div class="bg-white sh rounded-2xl overflow-hidden flex flex-col">
-        <div class="rs-a h-1.5 w-full"></div>
-        <div class="overflow-hidden">
-          <img src="assets/fieldwork/optico_Ulmo.gif" alt="Método óptico Ulmo" class="res-media" />
-        </div>
-        <div class="p-6 flex flex-col gap-2.5 flex-1">
-          <span class="tag tag-a"><span data-es>Cambio Climático</span><span data-en>Climate Change</span></span>
-          <h3 class="font-display text-f-900 text-lg leading-snug"><span data-es>Impactos del Cambio Climático en Bosques Chilenos</span><span data-en>Climate Change Impacts on Chilean Forests</span></h3>
-          <p class="text-gray-500 text-sm leading-relaxed flex-1">
-            <span data-es>Analizamos cómo el cambio climático afecta la distribución y funcionamiento de los bosques de Chile. Modelamos el balance hídrico y la interacción suelo-vegetación-atmósfera de condiciones sin precedentes en ecosistemas mediterráneos.</span>
-            <span data-en>We analyse how climate change affects the distribution, function, and dynamics of Chilean forests, modelling water balance and the soil-vegetation-atmosphere interaction of unprecedented conditions in Mediterranean ecosystems.</span>
-          </p>
-        </div>
-      </div>
-
-    </div>
   </div>
 </section>
 
